@@ -1,17 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Button, FlatList } from 'react-native';
 import { getMoviesList } from '../utils/api';
-import { FlatList } from 'react-native-gesture-handler';
-import { Value } from 'react-native-reanimated';
+import MovieCard from '../components/MovieCard';
 
 
 export default class MovieListing extends React.Component {
 
-    constructor() {
-        super()
-        this.state = {
-            movies: null  
-        }
+    state = {
+        movies: null,
+        page: 1,
     }
 
     async loadMoviesList() {
@@ -40,16 +37,14 @@ export default class MovieListing extends React.Component {
         }
         return (
             <View style={styles.container}>
-                <Text> Movies List!</Text>
                 <FlatList data={this.state.movies} 
                 renderItem = {({item}) => (
-                    <View style={{paddingTop:10}}>
-                        <Button title={item.title}
-                        onPress={() => this.handleMovieDetailPressed(item)} />
-                    </View>
+                        <MovieCard movie={item} viewMovieDetail={this.handleMovieDetailPressed}/>
                 )}
                 keyExtractor = {item => item.id}
-                 />
+                numColumns={2}
+
+                />
             </View>
         )
     }
